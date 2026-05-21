@@ -6,6 +6,17 @@ from dotenv import load_dotenv
 import requests
 import plotly.express as px
 
+#TODO Sepreate Steam Calls into its own file (make a wraper bassicaly)
+
+#TODO: Make a page to view games I didnt play
+
+#TODO: make a page where i can view and add stuff to the backlog
+
+#TODO:
+
+#active virtual enviorment source .venv/bin/activate
+
+
 
 load_dotenv()
 
