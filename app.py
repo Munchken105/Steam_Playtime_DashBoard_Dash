@@ -5,8 +5,7 @@ import os
 from dotenv import load_dotenv
 import requests
 import plotly.express as px
-
-#TODO Sepreate Steam Calls into its own file (make a wraper bassicaly)
+from steam_api import SteamAPI
 
 #TODO: Make a page to view games I didnt play
 
@@ -20,32 +19,21 @@ import plotly.express as px
 
 load_dotenv()
 
+
+
 #STEAM API KEYS AND MY STEAM ID
 STEAM_API_KEY = os.getenv("STEAM_API_KEY")
 STEAM_ID = os.getenv("STEAM_ID")
 
-#data
-games_url = "https://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/" #the base url with no parameters
-param = { #the parameters im going to feed the url 
-    "key": STEAM_API_KEY,
-    "steamid" : STEAM_ID,
-    "format": "json",
-    "include_appinfo": True,
-    "include_played_free_games": True
-}
+steam = SteamAPI(STEAM_API_KEY,STEAM_ID)
 
-#send a request and store the response in a var
-response = requests.get(games_url, params=param)
-
-#convert the json to python data
-games_data = response.json()
 
 #get all games it games is a list of dictionarys
-games = games_data["response"]["games"]
+games = steam.GetOwnedGames()
 
 #loop to get all global achivment percentages data for each game owned
 
-achievement_url = "https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/"
+
 
 #place all achievements in a dict to refernce the data later, key = appid and values = achievements
 achievement_dict = {}
@@ -54,27 +42,20 @@ completion_list = []
 
 for game in games:
     appid = game["appid"]
-    game_name = game.get("name", "Unkown Game")
     
-    achievement_param = {
-        "key": STEAM_API_KEY,
-        "steamid": STEAM_ID,
-        "appid": appid
-    }
-
-    #send a request
-    response = requests.get(achievement_url, params=achievement_param)
+    #get the name of the game if there is no name than call it Unknown Game
+    game_name = game.get("name", "Unknown Game")
     
-    #parse the request
-    achievement_data = response.json()
 
-    if "playerstats" in achievement_data:
-        achievements = achievement_data["playerstats"].get("achievements", [])
+    achievements = steam.GetPlayerAchievements(appid)
 
+    #if i have a achivement in x game than update the achievement dict
+    if achievements:
         achievement_dict[appid] = {
-            "game_name" : game_name,
-            "achievements" : achievements
+            "game_name": game_name,
+            "achievements": achievements
         }
+
 
         total_achievements = len(achievements)
 
@@ -91,8 +72,8 @@ for game in games:
             })
 
 df = pd.DataFrame(completion_list)
-
-df = df.sort_values(by="completion_percent", ascending=False)
+if not df.empty:
+    df = df.sort_values(by="completion_percent", ascending=False)
 
 fig = px.bar(
     df.head(10),
