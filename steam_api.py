@@ -52,6 +52,7 @@ class SteamAPI:
         return achievements
         
     #returns games that the user hasnt played in a list of dict key being app id and value being title list of dict is good for data frames
+    #key = appid, value = gametitle
     def GamesNotPlayed(self):
         
        owned_games = self.GetOwnedGames()

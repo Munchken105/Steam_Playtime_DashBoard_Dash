@@ -99,9 +99,24 @@ app = Dash(__name__)
 
 #app layout
 app.layout = html.Div([
-    html.H1("Steam Achievement Dashboard"),
-    html.P(f"Games checked: {len(achievement_dict)}"),
-    dcc.Graph(figure=fig)
+
+
+    html.H1("Steam Dashboard"),
+    
+    dcc.Tabs([
+        dcc.Tab(label="Graphs",children=[
+            html.P(f"Games checked: {len(achievement_dict)}"),
+            dcc.Graph(figure=fig)
+        ]),
+
+        dcc.Tab(label="BackLog",children=[
+            html.H2("Backlog"),
+            html.P("Blacklog manger place holder")
+
+        ]),
+    ]),
+
+    
 
 ])
 
