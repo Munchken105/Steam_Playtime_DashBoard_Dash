@@ -9,9 +9,11 @@ from steam_api import SteamAPI
 
 #TODO: Make a page to view games I didnt play
 
-#TODO: make a page where i can view and add stuff to the backlog
+#TODO: make a page where i can view and add stuff to the backlog (in progress)
 
-#TODO: work on making tabs in the app using tabs to switch between back log manager and graphs
+#TODO: work on making tabs in the app using tabs to switch between back log manager and graphs 
+
+#TODO: Make Feature to see friends graphs
 
 #active virtual enviorment source .venv/bin/activate
 
