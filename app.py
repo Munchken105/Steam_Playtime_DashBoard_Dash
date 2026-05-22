@@ -1,4 +1,4 @@
-from dash import Dash, html, dcc
+from dash import Dash, html, dcc, Input, Output, callback
 import json
 import pandas as pd
 import os
@@ -11,12 +11,12 @@ from steam_api import SteamAPI
 
 #TODO: make a page where i can view and add stuff to the backlog
 
-#TODO:
+#TODO: work on making tabs in the app using tabs to switch between back log manager and graphs
 
 #active virtual enviorment source .venv/bin/activate
 
 
-
+#loads the .env file
 load_dotenv()
 
 
@@ -89,6 +89,9 @@ fig = px.bar(
     )
 
 fig.update_layout(yaxis=dict(autorange="reversed"))
+
+
+
 
 
 #inililizae dash app
