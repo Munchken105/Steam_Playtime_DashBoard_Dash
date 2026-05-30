@@ -98,7 +98,7 @@ fig.update_layout(yaxis=dict(autorange="reversed"))
 
 #inililizae dash app
 app = Dash(__name__)
-
+server = app.server
 #app layout
 app.layout = html.Div([
 
@@ -124,4 +124,8 @@ app.layout = html.Div([
 
 # Run the app
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", 8050)),
+        debug=False)
+
