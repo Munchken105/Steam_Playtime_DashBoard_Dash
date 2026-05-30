@@ -19,19 +19,29 @@ from steam_api import SteamAPI
 
 
 #loads the .env file
+
+
 load_dotenv()
 
+STEAM_API_KEY = os.getenv("STEAM_API_KEY")
+TEAM_ID = os.getenv("STEAM_ID")
 
 
 #STEAM API KEYS AND MY STEAM ID
-STEAM_API_KEY = os.getenv("STEAM_API_KEY")
-STEAM_ID = os.getenv("STEAM_ID")
 
-steam = SteamAPI(STEAM_API_KEY,STEAM_ID)
+games = []
+
+if STEAM_API_KEY and STEAM_ID:
+    try:
+        steam = SteamAPI(STEAM_API_KEY,STEAM_ID)
+        #get all games it games is a list of dictionarys
+        games = steam.GetOwnedGames()
+    except Exception as e:
+        print(f"steam api error:{e}")
+    else:
+        print("Mising Steam ID or API KEY")
 
 
-#get all games it games is a list of dictionarys
-games = steam.GetOwnedGames()
 
 #loop to get all global achivment percentages data for each game owned
 
